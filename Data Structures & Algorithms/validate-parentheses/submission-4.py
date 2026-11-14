@@ -1,42 +1,53 @@
 class Solution:
     def isValid(self, s: str) -> bool:
         """
-        undertstand: 
-        input: string
-        output: bool
-
         plan:
-        if length of string is odd lets return false
-        if first item is on of the closing signs then return false too
+        create an empty stack list -> stack = []
+        edgecase: if the first item is ")}]" then return false
+        if length of the string is odd then return false
+        create a dict that maps closing with opening
 
-        lets create a dict that maps closing with opening
-        create empty list
-        then iterate through the string and if item is one of the opening append it
-        else compare the last item using the item as key to find  vlaue in the dict and if they not same return false
 
-        out side loop return true
+
+        s = "([{}])"
+        loop through the str
+        append to the stack
+
+        if item(s[i]) is closing compare the values with its respective dictionary
+        if not the same then return false
+
+        if they are same, pop the top element
+
+        leave the loop and return true
+
+
+        stack = ["(","[","{"]
 
 
         """
-        if len(s) == 0 or len(s) % 2 != 0:
+        if s[0] in "}])" or len(s) %2 != 0:
             return False
-        if s[0] in set("}])"):
-            return False
-        
-        new_dict = {"}": "{", ")": "(", "]":"["}
-        new_list = []
+
+        map_dict = {")":"(", "]":"[", "}":"{"}
+
+        stack = []
         for ch in s:
-            if ch in set("{[("):
-                new_list.append(ch)
+            if ch in "({[":  # s="(){}}{"    stack = []
+                stack.append(ch)
             else:
-                if not new_list:
+                if not stack:
+                    return False
+                if stack and stack[-1] != map_dict[ch]:
                     return False
                 else:
-                    if new_list[-1] != new_dict[ch]:
-                        return False
-                    else:
-                        new_list.pop()
+                    stack.pop()
+        return len(stack) == 0
+        
+                
+
             
-        return len(new_list) == 0
 
 
+
+        
+        
